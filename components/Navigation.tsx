@@ -23,7 +23,7 @@ export function Navigation() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
                 <Link
-                    href="/" // /Work
+                    href="/work"
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${isWork
                         ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
                         : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
