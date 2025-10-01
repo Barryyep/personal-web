@@ -61,7 +61,7 @@ export default function HomePage() {
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center"
                     >
                         <Link
-                            href="/" // /Work
+                            href="/work" // /Work
                             className="btn-primary inline-flex items-center gap-2 px-8 py-3 text-lg"
                         >
                             View Work
@@ -88,7 +88,7 @@ export default function HomePage() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         {/* /Work */}
-                        <Link href="/" className="block group">
+                        <Link href="/work" className="block group">
                             <div className="card p-8 h-full hover:shadow-xl transition-all">
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e84600] to-[#ff5e1a] flex items-center justify-center flex-shrink-0">
