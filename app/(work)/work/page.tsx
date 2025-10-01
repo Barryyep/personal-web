@@ -4,10 +4,10 @@ import { listingFilter } from '@/lib/visibility';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Work — Barry',
+    title: 'Work — Barryyep',
     description: 'Projects, systems, and engineering work',
     openGraph: {
-        title: 'Work — Barry',
+        title: 'Work — Barryyep',
         images: [
             {
                 url: `/api/og?title=${encodeURIComponent('Work')}&type=work`,

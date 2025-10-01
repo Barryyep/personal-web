@@ -71,7 +71,7 @@ export default function HomePage() {
                             </svg>
                         </Link>
                         <Link
-                            href="/"  // /Life
+                            href="/life"  // /Life
                             className="btn inline-flex items-center gap-2 px-8 py-3 text-lg"
                         >
                             Read Stories
@@ -122,7 +122,7 @@ export default function HomePage() {
                         transition={{ duration: 0.6, delay: 0.3 }}
                     >
                         {/* /Life */}
-                        <Link href="/" className="block group">
+                        <Link href="/life" className="block group">
                             <div className="card p-8 h-full hover:shadow-xl transition-all">
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e84600] to-[#ff5e1a] flex items-center justify-center flex-shrink-0">
@@ -163,7 +163,7 @@ export default function HomePage() {
                         I'm <span className="logo-font text-[var(--accent)] text-2xl">Barry</span>, a builder at heart. From AI-driven analytics to personal stories, I care about creating things that connect—between data and people, between work and life.
                     </p>
                     {/* /About */}
-                    <Link href="/" className="text-[var(--accent)] font-medium hover:text-[var(--accent-soft)] transition-colors">
+                    <Link href="/about" className="text-[var(--accent)] font-medium hover:text-[var(--accent-soft)] transition-colors">
                         More about me →
                     </Link>
                 </motion.div>
