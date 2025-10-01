@@ -42,13 +42,13 @@ export function Navigation() {
                 </Link>
                 <div className="w-px h-6 bg-[var(--border)] mx-2" />
                 <Link
-                    href="/" // /About
+                    href="/about" // /About
                     className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)] transition-all"
                 >
                     About
                 </Link>
                 <Link
-                    href="/" // /Contact
+                    href="/contact" // /Contact
                     className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)] transition-all"
                 >
                     Contact
