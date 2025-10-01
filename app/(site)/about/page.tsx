@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'About — Barry',
-    description: 'Engineer, builder, and occasional photographer based in Tokyo.',
+    title: 'About Me — Barryyep',
+    description: 'Engineer, builder, and occasional photographer based in Los Angeles.',
 };
 
 export default function AboutPage() {

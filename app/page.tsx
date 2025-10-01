@@ -49,6 +49,7 @@ export default function HomePage() {
                         </h1>
                         <p className="text-xl md:text-2xl text-[var(--fg-muted)] mb-12 leading-relaxed max-w-2xl mx-auto">
                             Software engineer, product builder, and storyteller.
+                            <br />
                             Crafting elegant solutions to complex problems.
                         </p>
                     </motion.div>

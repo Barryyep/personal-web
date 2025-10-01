@@ -1,0 +1,44 @@
+---
+title: "LLM-Powered ETL Pipeline"
+date: 2024-05-01
+summary: "Led development of a production-grade LLM ETL pipeline powering insights across 800+ companies."
+tech: ["LLM", "FastAPI", "AWS DynamoDB", "Airflow", "Zilliz", "RAG", "Lark"]
+hero: "/images/wt-asset/cover.jpg"
+featured: true
+visibility: public
+---
+
+## Overview
+
+For WT Asset Management, I delivered a **long-running, production-grade ETL pipeline** integrating LLMs with multi-source data ingestion, powering analysis for 800+ companies.
+
+<GoogleSlidesEmbed 
+  slideId="2PACX-1vTZh-zzcMzkZGwsh5lTu4mAdsMqWsXjHRJ_cY0d6k51j_RnbntBAE7vkbIB_tr7nfiO9r0zHrEsv54S" 
+  title="LLM-Powered ETL Architecture" 
+/>
+
+## The Challenge
+
+- Aggregate **multi-source data daily**  
+- Deliver insights reliably for hundreds of companies  
+- Enable **real-time querying** of corporate knowledge  
+
+## Architecture Decisions
+
+### LLM-Powered ETL
+- Web scraping with Selenium and cron jobs  
+- FastAPI services orchestrating daily ingestion  
+- Data stored in AWS DynamoDB  
+
+### Chatbot with RAG
+- Integrated with Lark for real-time Q&A  
+- Used Zilliz vector DB for retrieval  
+
+## Key Learnings
+- **LLM pipelines must be productionized** with monitoring and retries.  
+- Reliability > flashy models in enterprise workflows.  
+
+## Metrics
+- 14+ months continuous production uptime  
+- 800+ companies ingested daily  
+- Deployed chatbot serving real-time analysts  
