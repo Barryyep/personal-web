@@ -3,8 +3,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function HomePage() {
+    const locale = useLocale();
+    const t = useTranslations('Home');
     const words = ['matter', 'inspire', 'connect', 'smile'];
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
@@ -62,19 +65,19 @@ export default function HomePage() {
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center"
                     >
                         <Link
-                            href="/work" // /Work
+                            href={`/${locale}/work`}
                             className="btn-primary inline-flex items-center gap-2 px-8 py-3 text-lg"
                         >
-                            View Work
+                            {t('viewWork')}
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </Link>
                         <Link
-                            href="/life"  // /Life
+                            href={`/${locale}/life`}
                             className="btn inline-flex items-center gap-2 px-8 py-3 text-lg"
                         >
-                            Read Stories
+                            {t('viewLife')}
                         </Link>
                     </motion.div>
                 </div>
@@ -88,8 +91,7 @@ export default function HomePage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        {/* /Work */}
-                        <Link href="/work" className="block group">
+                        <Link href={`/${locale}/work`} className="block group">
                             <div className="card p-8 h-full hover:shadow-xl transition-all">
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e84600] to-[#ff5e1a] flex items-center justify-center flex-shrink-0">
@@ -99,15 +101,15 @@ export default function HomePage() {
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-2xl font-semibold mb-2 group-hover:text-[var(--accent)] transition-colors">
-                                            Work
+                                            {t('workTitle')}
                                         </h3>
                                         <p className="text-[var(--fg-muted)] leading-relaxed">
-                                            Projects, systems, and engineering work. From MVPs to production-scale applications.
+                                            {t('workDescription')}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center text-[var(--accent)] font-medium group-hover:translate-x-2 transition-transform">
-                                    Explore projects
+                                    {t('viewWork')}
                                     <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                     </svg>
@@ -121,8 +123,7 @@ export default function HomePage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                     >
-                        {/* /Life */}
-                        <Link href="/life" className="block group">
+                        <Link href={`/${locale}/life`} className="block group">
                             <div className="card p-8 h-full hover:shadow-xl transition-all">
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e84600] to-[#ff5e1a] flex items-center justify-center flex-shrink-0">
@@ -132,15 +133,15 @@ export default function HomePage() {
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-2xl font-semibold mb-2 group-hover:text-[var(--accent)] transition-colors">
-                                            Life
+                                            {t('lifeTitle')}
                                         </h3>
                                         <p className="text-[var(--fg-muted)] leading-relaxed">
-                                            Personal moments, travel notes, and reflections. Stories worth sharing.
+                                            {t('lifeDescription')}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center text-[var(--accent)] font-medium group-hover:translate-x-2 transition-transform">
-                                    Read stories
+                                    {t('viewLife')}
                                     <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                     </svg>
@@ -160,10 +161,9 @@ export default function HomePage() {
                     className="max-w-3xl mx-auto text-center"
                 >
                     <p className="text-lg text-[var(--fg-muted)] leading-relaxed mb-6">
-                        I'm <span className="logo-font text-[var(--accent)] text-2xl">Barry</span>, a builder at heart. From AI-driven analytics to personal stories, I care about creating things that connect—between data and people, between work and life.
+                        {t('description')}
                     </p>
-                    {/* /About */}
-                    <Link href="/about" className="text-[var(--accent)] font-medium hover:text-[var(--accent-soft)] transition-colors">
+                    <Link href={`/${locale}/about`} className="text-[var(--accent)] font-medium hover:text-[var(--accent-soft)] transition-colors">
                         More about me →
                     </Link>
                 </motion.div>

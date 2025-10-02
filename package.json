@@ -10,10 +10,12 @@
         "postinstall": "contentlayer2 build"
     },
     "dependencies": {
+        "@vercel/analytics": "^1.5.0",
         "contentlayer2": "^0.4.6",
         "framer-motion": "^11.0.0",
         "next": "^14.2.5",
         "next-contentlayer2": "^0.4.6",
+        "next-intl": "^4.3.9",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     },

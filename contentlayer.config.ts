@@ -16,15 +16,24 @@ export const WorkPost = defineDocumentType(() => ({
         hero: { type: 'string', required: false },
         featured: { type: 'boolean', default: false },
         visibility: { type: 'enum', options: Visibility as any, default: 'public' },
+        locale: { type: 'enum', options: ['en', 'zh'], default: 'en' },
     },
     computedFields: {
         slug: {
             type: 'string',
-            resolve: (doc) => doc._raw.flattenedPath.replace(/^work\//, ''),
+            resolve: (doc) => {
+                const path = doc._raw.flattenedPath.replace(/^work\//, '');
+                // 如果文件名包含 .en 或 .zh，移除它
+                return path.replace(/\.(en|zh)$/, '');
+            },
         },
         url: {
             type: 'string',
-            resolve: (doc) => `/work/${doc._raw.flattenedPath.replace(/^work\//, '')}`
+            resolve: (doc) => {
+                const locale = doc.locale || 'en';
+                const slug = doc._raw.flattenedPath.replace(/^work\//, '').replace(/\.(en|zh)$/, '');
+                return `/${locale}/work/${slug}`;
+            }
         },
     },
 }));
@@ -40,15 +49,24 @@ export const LifePost = defineDocumentType(() => ({
         hero: { type: 'string', required: false },
         visibility: { type: 'enum', options: Visibility as any, default: 'public' },
         tags: { type: 'list', of: { type: 'string' } },
+        locale: { type: 'enum', options: ['en', 'zh'], default: 'en' },
     },
     computedFields: {
         slug: {
             type: 'string',
-            resolve: (doc) => doc._raw.flattenedPath.replace(/^life\//, ''),
+            resolve: (doc) => {
+                const path = doc._raw.flattenedPath.replace(/^life\//, '');
+                // 如果文件名包含 .en 或 .zh，移除它
+                return path.replace(/\.(en|zh)$/, '');
+            },
         },
         url: {
             type: 'string',
-            resolve: (doc) => `/life/${doc._raw.flattenedPath.replace(/^life\//, '')}`
+            resolve: (doc) => {
+                const locale = doc.locale || 'en';
+                const slug = doc._raw.flattenedPath.replace(/^life\//, '').replace(/\.(en|zh)$/, '');
+                return `/${locale}/life/${slug}`;
+            }
         },
     },
 }));

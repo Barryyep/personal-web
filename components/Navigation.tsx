@@ -3,18 +3,30 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
 export function Navigation() {
     const pathname = usePathname();
-    const isWork = pathname.startsWith('/work');
-    const isLife = pathname.startsWith('/life');
+    const locale = useLocale();
+    const t = useTranslations('Navigation');
+
+    // 移除 locale 前缀后检查路径
+    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
+    const isWork = pathWithoutLocale.startsWith('/work');
+    const isLife = pathWithoutLocale.startsWith('/life');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    // 切换语言
+    const switchLocale = (newLocale: string) => {
+        const pathWithoutLocale = pathname.replace(`/${locale}`, '');
+        window.location.href = `/${newLocale}${pathWithoutLocale}`;
+    };
 
     return (
         <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
             {/* Logo */}
             <Link
-                href="/"
+                href={`/${locale}`}
                 className="logo-font text-3xl md:text-4xl hover:text-[var(--accent-soft)] transition-colors z-50"
             >
                 Barryyep
@@ -23,36 +35,59 @@ export function Navigation() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
                 <Link
-                    href="/work"
+                    href={`/${locale}/work`}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${isWork
                         ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
                         : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
                         }`}
                 >
-                    Work
+                    {t('work')}
                 </Link>
                 <Link
-                    href="/" // /Life
+                    href={`/${locale}/life`}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${isLife
                         ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
                         : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
                         }`}
                 >
-                    Life
+                    {t('life')}
                 </Link>
                 <div className="w-px h-6 bg-[var(--border)] mx-2" />
                 <Link
-                    href="/about" // /About
+                    href={`/${locale}/about`}
                     className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)] transition-all"
                 >
-                    About
+                    {t('about')}
                 </Link>
                 <Link
-                    href="/contact" // /Contact
+                    href={`/${locale}/contact`}
                     className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)] transition-all"
                 >
-                    Contact
+                    {t('contact')}
                 </Link>
+
+                {/* Language Switcher */}
+                <div className="w-px h-6 bg-[var(--border)] mx-2" />
+                <div className="flex items-center gap-1 bg-[var(--bg-soft)] rounded-lg p-1">
+                    <button
+                        onClick={() => switchLocale('en')}
+                        className={`px-3 py-1 rounded text-sm font-medium transition-all ${locale === 'en'
+                            ? 'bg-[var(--bg)] text-[var(--fg)] shadow-sm'
+                            : 'text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                            }`}
+                    >
+                        EN
+                    </button>
+                    <button
+                        onClick={() => switchLocale('zh')}
+                        className={`px-3 py-1 rounded text-sm font-medium transition-all ${locale === 'zh'
+                            ? 'bg-[var(--bg)] text-[var(--fg)] shadow-sm'
+                            : 'text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                            }`}
+                    >
+                        中文
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -79,40 +114,72 @@ export function Navigation() {
                 <div className="md:hidden fixed inset-0 top-16 bg-[var(--bg)] z-40 border-t border-[var(--border)] backdrop-blur-sm">
                     <div className="container mx-auto px-4 py-6 flex flex-col gap-2 bg-[var(--bg)]">
                         <Link
-                            href="/work"
+                            href={`/${locale}/work`}
                             onClick={() => setMobileMenuOpen(false)}
                             className={`px-4 py-3 rounded-lg text-base font-medium transition-all ${isWork
                                 ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
                                 : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
                                 }`}
                         >
-                            Work
+                            {t('work')}
                         </Link>
                         <Link
-                            href="/life"
+                            href={`/${locale}/life`}
                             onClick={() => setMobileMenuOpen(false)}
                             className={`px-4 py-3 rounded-lg text-base font-medium transition-all ${isLife
                                 ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
                                 : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
                                 }`}
                         >
-                            Life
+                            {t('life')}
                         </Link>
                         <div className="h-px bg-[var(--border)] my-2" />
                         <Link
-                            href="/about"
+                            href={`/${locale}/about`}
                             onClick={() => setMobileMenuOpen(false)}
                             className="px-4 py-3 rounded-lg text-base font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)] transition-all"
                         >
-                            About
+                            {t('about')}
                         </Link>
                         <Link
-                            href="/contact"
+                            href={`/${locale}/contact`}
                             onClick={() => setMobileMenuOpen(false)}
                             className="px-4 py-3 rounded-lg text-base font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)] transition-all"
                         >
-                            Contact
+                            {t('contact')}
                         </Link>
+
+                        {/* Mobile Language Switcher */}
+                        <div className="h-px bg-[var(--border)] my-2" />
+                        <div className="flex items-center gap-2 px-4">
+                            <span className="text-sm text-[var(--fg-muted)]">Language:</span>
+                            <div className="flex items-center gap-1 bg-[var(--bg-soft)] rounded-lg p-1 flex-1">
+                                <button
+                                    onClick={() => {
+                                        switchLocale('en');
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    className={`px-3 py-2 rounded text-sm font-medium transition-all flex-1 ${locale === 'en'
+                                        ? 'bg-[var(--bg)] text-[var(--fg)] shadow-sm'
+                                        : 'text-[var(--fg-muted)]'
+                                        }`}
+                                >
+                                    English
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        switchLocale('zh');
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    className={`px-3 py-2 rounded text-sm font-medium transition-all flex-1 ${locale === 'zh'
+                                        ? 'bg-[var(--bg)] text-[var(--fg)] shadow-sm'
+                                        : 'text-[var(--fg-muted)]'
+                                        }`}
+                                >
+                                    中文
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

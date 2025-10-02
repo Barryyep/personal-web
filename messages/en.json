@@ -1,0 +1,73 @@
+{
+    "Navigation": {
+        "work": "Work",
+        "life": "Life",
+        "about": "About",
+        "contact": "Contact"
+    },
+    "Home": {
+        "greeting": "Hi, I'm Barry",
+        "title": "Software Engineer, Product Builder, and Storyteller",
+        "description": "I'm Barry, a builder at heart. From AI-driven analytics to personal stories, I care about creating things that connect—between data and people, between work and life.",
+        "viewWork": "View Work",
+        "viewLife": "Read Stories",
+        "workTitle": "Work",
+        "workDescription": "Projects, systems, and engineering work. From MVPs to production-scale applications.",
+        "lifeTitle": "Life",
+        "lifeDescription": "Personal moments, travel notes, and reflections. Stories worth sharing."
+    },
+    "Work": {
+        "title": "Work",
+        "subtitle": "Selected projects and engineering work — from prototypes to production systems.",
+        "featured": "Featured",
+        "allProjects": "All Projects",
+        "readMore": "Read more",
+        "techStack": "Tech Stack"
+    },
+    "Life": {
+        "title": "Life",
+        "subtitle": "Moments, stories, and experiences worth sharing.",
+        "allStories": "All Stories",
+        "readMore": "Read more"
+    },
+    "About": {
+        "title": "About Me",
+        "intro": "Hi, I'm Barry — a software engineer and builder based in Los Angeles, currently pursuing my Master's in Computer Science at USC. I work on systems that need to scale, interfaces that need to feel right, and problems that don't have obvious solutions yet.",
+        "paragraph1": "My professional focus is on full-stack development, data analysis and ETL, and the occasional frontend challenge. I also have a strong interest in product design and app experiences, and I'm eager to grow toward a Product Manager role in the future. I care about performance, maintainability, and building products that people actually use.",
+        "paragraph2": "Outside of work and study, you'll probably find me swimming, on a golf course, or reading Agatha Christie's detective novels.",
+        "techTitle": "What I Work With",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "tools": "Tools & Platforms",
+        "currentlyTitle": "Currently",
+        "currently1": "Pursuing Master's in Computer Science at USC",
+        "currently2": "Reading: Les Misérables",
+        "currently3": "Learning Vue.js and using Figma",
+        "currently4": "Swimming, golfing, and solving detective mysteries",
+        "siteTitle": "This Site",
+        "siteDescription": "Built with Next.js 14 (App Router), TypeScript, Tailwind CSS, and Contentlayer for MDX content. Custom dark theme with orange accents for a unique visual identity.",
+        "siteFootnote": "Hosted on Vercel. Custom font: Birthlong. Code highlighting: Rehype Pretty Code."
+    },
+    "Contact": {
+        "title": "Get in Touch",
+        "intro": "I'm always open to interesting conversations, collaboration opportunities, or project inquiries. Whether you're looking to work together or just want to chat about tech, design, or travel — feel free to reach out.",
+        "methodsTitle": "Contact Methods",
+        "instagram": "Instagram",
+        "instagramBest": "Best for: Life updates, travel photos, casual connections",
+        "email": "Email",
+        "emailBest": "Best for: Project inquiries, collaborations, professional matters",
+        "github": "GitHub",
+        "githubBest": "Best for: Open source contributions, technical discussions",
+        "linkedin": "LinkedIn",
+        "linkedinBest": "Best for: Professional networking, job opportunities",
+        "responseTitle": "Response Time",
+        "responseText": "I typically respond to emails within 24-48 hours during weekdays. Please note that I'm based in PST (UTC-8).",
+        "privacyNote": "Note on privacy: I respect your privacy and will never share your contact information with third parties. Any communication will remain between us unless you explicitly state otherwise."
+    },
+    "Common": {
+        "backToTop": "Back to top",
+        "loading": "Loading...",
+        "notFound": "Page not found",
+        "readMore": "Read more"
+    }
+}

@@ -1,0 +1,73 @@
+{
+    "Navigation": {
+        "work": "作品",
+        "life": "生活",
+        "about": "关于",
+        "contact": "联系"
+    },
+    "Home": {
+        "greeting": "你好，我是 Barry",
+        "title": "软件工程师、产品构建者、故事讲述者",
+        "description": "我是 Barry，一个热爱创造的人。从 AI 驱动的数据分析到个人故事，我关心创造能够连接的事物——连接数据与人，连接工作与生活。",
+        "viewWork": "查看作品",
+        "viewLife": "阅读故事",
+        "workTitle": "作品",
+        "workDescription": "项目、系统和工程作品。从 MVP 到生产规模的应用程序。",
+        "lifeTitle": "生活",
+        "lifeDescription": "个人瞬间、旅行笔记和思考。值得分享的故事。"
+    },
+    "Work": {
+        "title": "作品集",
+        "subtitle": "精选项目和工程作品 — 从原型到生产系统。",
+        "featured": "精选",
+        "allProjects": "所有项目",
+        "readMore": "阅读更多",
+        "techStack": "技术栈"
+    },
+    "Life": {
+        "title": "生活",
+        "subtitle": "值得分享的瞬间、故事和经历。",
+        "allStories": "所有故事",
+        "readMore": "阅读更多"
+    },
+    "About": {
+        "title": "关于我",
+        "intro": "你好，我是 Barry — 一名软件工程师和构建者，目前在洛杉矶，正在南加州大学攻读计算机科学硕士学位。我致力于开发需要扩展的系统、需要良好体验的界面，以及那些还没有明显解决方案的问题。",
+        "paragraph1": "我的专业重点是全栈开发、数据分析和 ETL，以及偶尔的前端挑战。我对产品设计和应用体验也有浓厚的兴趣，并渴望未来成长为产品经理角色。我关心性能、可维护性，以及构建人们真正使用的产品。",
+        "paragraph2": "在工作和学习之外，你可能会发现我在游泳、打高尔夫球，或者阅读阿加莎·克里斯蒂的侦探小说。",
+        "techTitle": "我使用的技术",
+        "backend": "后端",
+        "frontend": "前端",
+        "tools": "工具和平台",
+        "currentlyTitle": "目前",
+        "currently1": "在南加州大学攻读计算机科学硕士",
+        "currently2": "阅读：《悲惨世界》",
+        "currently3": "学习 Vue.js 和使用 Figma",
+        "currently4": "游泳、高尔夫和解决侦探谜题",
+        "siteTitle": "关于本站",
+        "siteDescription": "使用 Next.js 14（App Router）、TypeScript、Tailwind CSS 和 Contentlayer 构建，用于处理 MDX 内容。定制的深色主题配橙色强调色，形成独特的视觉识别。",
+        "siteFootnote": "托管在 Vercel。自定义字体：Birthlong。代码高亮：Rehype Pretty Code。"
+    },
+    "Contact": {
+        "title": "联系我",
+        "intro": "我一直对有趣的对话、合作机会或项目咨询保持开放态度。无论您是想合作，还是只是想聊聊技术、设计或旅行 — 随时联系我。",
+        "methodsTitle": "联系方式",
+        "instagram": "Instagram",
+        "instagramBest": "适合：生活动态、旅行照片、随意交流",
+        "email": "邮箱",
+        "emailBest": "适合：项目咨询、合作、专业事务",
+        "github": "GitHub",
+        "githubBest": "适合：开源贡献、技术讨论",
+        "linkedin": "LinkedIn",
+        "linkedinBest": "适合：专业社交、工作机会",
+        "responseTitle": "回复时间",
+        "responseText": "我通常在工作日的 24-48 小时内回复邮件。请注意我的时区是 PST（UTC-8）。",
+        "privacyNote": "隐私说明：我尊重您的隐私，绝不会与第三方分享您的联系信息。除非您明确表示，否则任何通信都将仅限于我们之间。"
+    },
+    "Common": {
+        "backToTop": "返回顶部",
+        "loading": "加载中...",
+        "notFound": "页面未找到",
+        "readMore": "阅读更多"
+    }
+}
