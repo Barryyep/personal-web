@@ -14,6 +14,7 @@ export function Navigation() {
     const pathWithoutLocale = pathname.replace(`/${locale}`, '');
     const isWork = pathWithoutLocale.startsWith('/work');
     const isLife = pathWithoutLocale.startsWith('/life');
+    const isBkn = pathWithoutLocale.startsWith('/bkn');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     // 切换语言
@@ -51,6 +52,15 @@ export function Navigation() {
                         }`}
                 >
                     {t('life')}
+                </Link>
+                <Link
+                    href={`/${locale}/bkn`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${isBkn
+                        ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
+                        : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
+                        }`}
+                >
+                    {t('bkn')}
                 </Link>
                 <div className="w-px h-6 bg-[var(--border)] mx-2" />
                 <Link
@@ -132,6 +142,16 @@ export function Navigation() {
                                 }`}
                         >
                             {t('life')}
+                        </Link>
+                        <Link
+                            href={`/${locale}/bkn`}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`px-4 py-3 rounded-lg text-base font-medium transition-all ${isBkn
+                                ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
+                                : 'text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-soft)]'
+                                }`}
+                        >
+                            {t('bkn')}
                         </Link>
                         <div className="h-px bg-[var(--border)] my-2" />
                         <Link
