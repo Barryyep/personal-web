@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 // Contract addresses and configuration
 const CONTRACT_ADDRESS = "0x82dd6a7F33418dFcDF9Ea89A1098BFF9a8142Cf6"; // BKN
 const FAUCET_ADDRESS = "0xDE39F03320202Bdc721Cd4FCB783Ee62B3DE972c"; // Faucet+Quiz
+const NFT_ADDRESS = "0x1FD281D52F2963b8236Ace2C344E4B6e737556Ff"; // BokenOnlyNFT
 const REQUIRED_CHAIN_ID = 11155111; // Sepolia
 const REQUIRED_CHAIN_HEX = "0xaa36a7";
 const REQUIRED_CHAIN_NAME = "Sepolia";
@@ -40,6 +41,19 @@ const FAUCET_ABI = [
     { "type": "function", "name": "rollQuestion", "stateMutability": "nonpayable", "inputs": [], "outputs": [{ "type": "bool" }] }
 ];
 
+// NFT ABI
+const NFT_ABI = [
+    { "type": "function", "name": "name", "stateMutability": "view", "inputs": [], "outputs": [{ "type": "string" }] },
+    { "type": "function", "name": "symbol", "stateMutability": "view", "inputs": [], "outputs": [{ "type": "string" }] },
+    { "type": "function", "name": "maxSupply", "stateMutability": "view", "inputs": [], "outputs": [{ "type": "uint256" }] },
+    { "type": "function", "name": "totalMinted", "stateMutability": "view", "inputs": [], "outputs": [{ "type": "uint256" }] },
+    { "type": "function", "name": "mintPriceBKN", "stateMutability": "view", "inputs": [], "outputs": [{ "type": "uint256" }] },
+    { "type": "function", "name": "tokenURI", "stateMutability": "view", "inputs": [{ "type": "uint256", "name": "tokenId" }], "outputs": [{ "type": "string" }] },
+    { "type": "function", "name": "balanceOf", "stateMutability": "view", "inputs": [{ "type": "address", "name": "owner" }], "outputs": [{ "type": "uint256" }] },
+    { "type": "function", "name": "ownerOf", "stateMutability": "view", "inputs": [{ "type": "uint256", "name": "tokenId" }], "outputs": [{ "type": "address" }] },
+    { "type": "function", "name": "mint", "stateMutability": "nonpayable", "inputs": [{ "type": "uint256", "name": "quantity" }], "outputs": [] }
+];
+
 declare global {
     interface Window {
         ethereum?: any;
@@ -52,6 +66,7 @@ export default function BKNPage() {
     const [signer, setSigner] = useState<any>(null);
     const [token, setToken] = useState<any>(null);
     const [faucet, setFaucet] = useState<any>(null);
+    const [nft, setNft] = useState<any>(null);
     const [account, setAccount] = useState<string>('-');
     const [network, setNetwork] = useState<string>('-');
     const [decimals, setDecimals] = useState<number>(18);
@@ -112,6 +127,45 @@ export default function BKNPage() {
 
     const [faucetMeta, setFaucetMeta] = useState<any>({ amount: 0n, cooldown: 0n, last: 0n });
     const [quizMeta, setQuizMeta] = useState<any>({ cooldown: 0n, last: 0n, a: 0n, b: 0n });
+
+    // NFT states
+    const [nftName, setNftName] = useState<string>('-');
+    const [nftSymbol, setNftSymbol] = useState<string>('-');
+    const [nftMaxSupply, setNftMaxSupply] = useState<string>('-');
+    const [nftTotalMinted, setNftTotalMinted] = useState<string>('-');
+    const [nftMintPrice, setNftMintPrice] = useState<string>('-');
+    const [nftBalance, setNftBalance] = useState<string>('-');
+    const [mintQuantity, setMintQuantity] = useState<string>('1');
+    const [mintTx, setMintTx] = useState<string>('');
+    const [mintLoading, setMintLoading] = useState<boolean>(false);
+    const [userNFTs, setUserNFTs] = useState<any[]>([]);
+    const [allNFTs, setAllNFTs] = useState<any[]>([]);
+    const [nftLoading, setNftLoading] = useState<boolean>(false);
+
+    // Helper function to convert IPFS URI to HTTP gateway
+    const ipfsToHttp = (uri: string) => {
+        if (!uri) return '';
+        if (uri.startsWith('ipfs://')) {
+            return uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
+        }
+        if (uri.startsWith('http')) {
+            return uri;
+        }
+        return `https://ipfs.io/ipfs/${uri}`;
+    };
+
+    // Fetch NFT metadata from tokenURI
+    const fetchNFTMetadata = async (tokenURI: string) => {
+        try {
+            const httpUri = ipfsToHttp(tokenURI);
+            const response = await fetch(httpUri);
+            const metadata = await response.json();
+            return metadata;
+        } catch (e) {
+            console.error('Error fetching NFT metadata:', e);
+            return null;
+        }
+    };
 
     const fmt = useCallback((x: bigint, d = decimals) => {
         return ethers.formatUnits(x, d);
@@ -190,9 +244,11 @@ export default function BKNPage() {
     const connectContracts = (web3Signer: any) => {
         const tokenContract = new ethers.Contract(CONTRACT_ADDRESS, ERC20_ABI, web3Signer);
         const faucetContract = new ethers.Contract(FAUCET_ADDRESS, FAUCET_ABI, web3Signer);
+        const nftContract = new ethers.Contract(NFT_ADDRESS, NFT_ABI, web3Signer);
         setToken(tokenContract);
         setFaucet(faucetContract);
-        return { tokenContract, faucetContract };
+        setNft(nftContract);
+        return { tokenContract, faucetContract, nftContract };
     };
 
     const loadTokenMeta = async (tokenContract: any) => {
@@ -235,14 +291,108 @@ export default function BKNPage() {
         updateCountdowns();
     };
 
+    const loadNFTMeta = async (nftContract: any, addr: string) => {
+        try {
+            const [name, symbol, maxSupply, totalMinted, mintPrice, balance] = await Promise.all([
+                nftContract.name(),
+                nftContract.symbol(),
+                nftContract.maxSupply(),
+                nftContract.totalMinted(),
+                nftContract.mintPriceBKN(),
+                nftContract.balanceOf(addr),
+            ]);
+
+            setNftName(name);
+            setNftSymbol(symbol);
+            setNftMaxSupply(maxSupply.toString());
+            setNftTotalMinted(totalMinted.toString());
+            setNftMintPrice(fmt(mintPrice));
+            setNftBalance(balance.toString());
+        } catch (e: any) {
+            console.error('Error loading NFT metadata:', e);
+        }
+    };
+
+    const loadUserNFTs = async (nftContract: any, addr: string) => {
+        try {
+            setNftLoading(true);
+            const balance = await nftContract.balanceOf(addr);
+            const totalMinted = await nftContract.totalMinted();
+
+            // Find all NFTs owned by the user
+            const ownedTokens: any[] = [];
+            for (let i = 1; i <= Number(totalMinted); i++) {
+                try {
+                    const owner = await nftContract.ownerOf(i);
+                    if (owner.toLowerCase() === addr.toLowerCase()) {
+                        const tokenURI = await nftContract.tokenURI(i);
+                        const metadata = await fetchNFTMetadata(tokenURI);
+                        ownedTokens.push({
+                            tokenId: i,
+                            owner,
+                            tokenURI,
+                            metadata,
+                            image: metadata ? ipfsToHttp(metadata.image) : null,
+                            name: metadata?.name || `Token #${i}`,
+                            description: metadata?.description || ''
+                        });
+                    }
+                } catch (e) {
+                    // Token doesn't exist or error
+                    continue;
+                }
+            }
+            setUserNFTs(ownedTokens);
+        } catch (e: any) {
+            console.error('Error loading user NFTs:', e);
+        } finally {
+            setNftLoading(false);
+        }
+    };
+
+    const loadAllNFTs = async (nftContract: any) => {
+        try {
+            setNftLoading(true);
+            const totalMinted = await nftContract.totalMinted();
+            const nfts: any[] = [];
+
+            for (let i = 1; i <= Number(totalMinted); i++) {
+                try {
+                    const owner = await nftContract.ownerOf(i);
+                    const tokenURI = await nftContract.tokenURI(i);
+                    const metadata = await fetchNFTMetadata(tokenURI);
+                    nfts.push({
+                        tokenId: i,
+                        owner,
+                        tokenURI,
+                        metadata,
+                        image: metadata ? ipfsToHttp(metadata.image) : null,
+                        name: metadata?.name || `Token #${i}`,
+                        description: metadata?.description || ''
+                    });
+                } catch (e) {
+                    // Token doesn't exist or error
+                    continue;
+                }
+            }
+            setAllNFTs(nfts);
+        } catch (e: any) {
+            console.error('Error loading all NFTs:', e);
+        } finally {
+            setNftLoading(false);
+        }
+    };
+
     const handleConnect = async () => {
         try {
             const { browserProvider, web3Signer, addr } = await ensureWallet();
             await ensureNetwork(browserProvider);
-            const { tokenContract, faucetContract } = connectContracts(web3Signer) || {};
-            if (tokenContract && faucetContract) {
+            const { tokenContract, faucetContract, nftContract } = connectContracts(web3Signer) || {};
+            if (tokenContract && faucetContract && nftContract) {
                 await loadTokenMeta(tokenContract);
                 await loadFaucetMeta(faucetContract, tokenContract, addr);
+                await loadNFTMeta(nftContract, addr);
+                await loadUserNFTs(nftContract, addr);
             }
         } catch (e: any) {
             setStatus(`${t('error')}: ${e.message}`);
@@ -392,6 +542,50 @@ export default function BKNPage() {
             setRollTx(`${t('error')}: ${e.message}`);
         } finally {
             setRollLoading(false);
+        }
+    };
+
+    const handleMintNFT = async () => {
+        setMintLoading(true);
+        try {
+            const qty = parseInt(mintQuantity);
+            if (!qty || qty <= 0) throw new Error("Invalid quantity");
+
+            // Calculate total cost
+            const mintPriceRaw = await nft.mintPriceBKN();
+            const totalCost = mintPriceRaw * BigInt(qty);
+
+            // First, approve the NFT contract to spend BKN
+            const allowance = await token.allowance(account, NFT_ADDRESS);
+            if (allowance < totalCost) {
+                setMintTx(`${t('pending')}: Approving BKN...`);
+                const approveTx = await token.approve(NFT_ADDRESS, totalCost);
+                await approveTx.wait();
+                setMintTx(`BKN Approved. ${t('pending')}: Minting...`);
+            }
+
+            // Then mint
+            const tx = await nft.mint(qty);
+            setMintTx(`${t('pending')}: ${tx.hash}`);
+            const r = await tx.wait();
+            setMintTx(`${t('confirmed')} ${r.blockNumber} · ${tx.hash}`);
+
+            // Refresh data
+            if (nft && token) {
+                await loadNFTMeta(nft, account);
+                await loadUserNFTs(nft, account);
+                await handleCheckBalance();
+            }
+        } catch (e: any) {
+            setMintTx(`${t('error')}: ${e.message}`);
+        } finally {
+            setMintLoading(false);
+        }
+    };
+
+    const handleLoadAllNFTs = async () => {
+        if (nft) {
+            await loadAllNFTs(nft);
         }
     };
 
@@ -590,6 +784,165 @@ export default function BKNPage() {
                     {t('refreshQuestion')}
                 </button>
                 {rollTx && <div className="mt-2 font-mono text-sm break-all">{rollTx}</div>}
+            </section>
+
+            {/* NFT Section */}
+            <section className="card p-6 mb-6">
+                <h2 className="text-2xl font-semibold mb-4">BokenOnly NFT</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <div className="text-sm text-[var(--fg-muted)]">NFT Contract Address</div>
+                        <div className="font-mono text-sm break-all">{NFT_ADDRESS}</div>
+                    </div>
+                    <div>
+                        <div className="text-sm text-[var(--fg-muted)]">Name</div>
+                        <div>{nftName}</div>
+                    </div>
+                    <div>
+                        <div className="text-sm text-[var(--fg-muted)]">Symbol</div>
+                        <div>{nftSymbol}</div>
+                    </div>
+                    <div>
+                        <div className="text-sm text-[var(--fg-muted)]">Mint Price</div>
+                        <div>{nftMintPrice} BKN</div>
+                    </div>
+                    <div>
+                        <div className="text-sm text-[var(--fg-muted)]">Minted / Max Supply</div>
+                        <div>{nftTotalMinted} / {nftMaxSupply}</div>
+                    </div>
+                    <div>
+                        <div className="text-sm text-[var(--fg-muted)]">Your NFT Balance</div>
+                        <div>{nftBalance}</div>
+                    </div>
+                </div>
+
+                {/* Mint NFT */}
+                <div className="border-t border-[var(--border)] pt-4 mt-4">
+                    <h3 className="text-xl font-semibold mb-3">Mint NFT</h3>
+                    <div className="flex flex-col md:flex-row gap-2 flex-wrap mb-2">
+                        <input
+                            type="number"
+                            value={mintQuantity}
+                            onChange={(e) => setMintQuantity(e.target.value)}
+                            placeholder="Quantity"
+                            min="1"
+                            className="flex-1 px-4 py-2 rounded-lg border border-[var(--border)] bg-[var(--bg)] text-[var(--fg)] focus:outline-none focus:border-[var(--accent)]"
+                        />
+                        <button onClick={handleMintNFT} disabled={mintLoading} className="btn-primary px-4 py-2 rounded-lg disabled:opacity-50">
+                            Mint NFT
+                        </button>
+                    </div>
+                    {mintTx && <div className="mt-2 font-mono text-sm break-all">{mintTx}</div>}
+                </div>
+
+                {/* User's NFTs */}
+                {userNFTs.length > 0 && (
+                    <div className="border-t border-[var(--border)] pt-4 mt-4">
+                        <h3 className="text-xl font-semibold mb-3">Your NFTs</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {userNFTs.map((nft) => (
+                                <div key={nft.tokenId} className="border border-[var(--border)] rounded-lg overflow-hidden">
+                                    {nft.image && (
+                                        <div className="w-full aspect-square bg-[var(--bg-muted)] relative">
+                                            <img
+                                                src={nft.image}
+                                                alt={nft.name}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="p-4">
+                                        <div className="text-lg font-semibold mb-1">{nft.name}</div>
+                                        <div className="text-sm text-[var(--fg-muted)] mb-2">Token #{nft.tokenId}</div>
+                                        {nft.description && (
+                                            <p className="text-sm text-[var(--fg-muted)] line-clamp-2 mb-2">{nft.description}</p>
+                                        )}
+                                        {nft.metadata?.attributes && (
+                                            <div className="mt-2 space-y-1">
+                                                {nft.metadata.attributes.slice(0, 3).map((attr: any, idx: number) => (
+                                                    <div key={idx} className="text-xs">
+                                                        <span className="text-[var(--fg-muted)]">{attr.trait_type}: </span>
+                                                        <span className="font-medium">{attr.value}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* All NFTs */}
+                <div className="border-t border-[var(--border)] pt-4 mt-4">
+                    <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xl font-semibold">All Minted NFTs</h3>
+                        <button onClick={handleLoadAllNFTs} disabled={nftLoading} className="btn px-3 py-1 rounded-lg disabled:opacity-50 text-sm">
+                            {nftLoading ? 'Loading...' : 'Load All NFTs'}
+                        </button>
+                    </div>
+                    {allNFTs.length > 0 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {allNFTs.map((nft) => (
+                                <div key={nft.tokenId} className="border border-[var(--border)] rounded-lg overflow-hidden">
+                                    {nft.image && (
+                                        <div className="w-full aspect-square bg-[var(--bg-muted)] relative">
+                                            <img
+                                                src={nft.image}
+                                                alt={nft.name}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="p-4">
+                                        <div className="text-lg font-semibold mb-1">{nft.name}</div>
+                                        <div className="text-sm text-[var(--fg-muted)] mb-2">Token #{nft.tokenId}</div>
+                                        <div className="text-xs mb-2">
+                                            <span className="text-[var(--fg-muted)]">Owner: </span>
+                                            <span className="font-mono break-all">{nft.owner.slice(0, 6)}...{nft.owner.slice(-4)}</span>
+                                        </div>
+                                        {nft.description && (
+                                            <p className="text-sm text-[var(--fg-muted)] line-clamp-2 mb-2">{nft.description}</p>
+                                        )}
+                                        {nft.metadata?.attributes && (
+                                            <div className="mt-2 space-y-1">
+                                                <div className="text-xs font-semibold text-[var(--fg-muted)] mb-1">Attributes:</div>
+                                                {nft.metadata.attributes.slice(0, 3).map((attr: any, idx: number) => (
+                                                    <div key={idx} className="text-xs">
+                                                        <span className="text-[var(--fg-muted)]">{attr.trait_type}: </span>
+                                                        <span className="font-medium">{attr.value}</span>
+                                                    </div>
+                                                ))}
+                                                {nft.metadata.attributes.length > 3 && (
+                                                    <div className="text-xs text-[var(--fg-muted)]">
+                                                        +{nft.metadata.attributes.length - 3} more
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                        <div className="mt-2 pt-2 border-t border-[var(--border)]">
+                                            <a
+                                                href={ipfsToHttp(nft.tokenURI)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-[var(--accent)] hover:underline text-xs"
+                                            >
+                                                View Metadata →
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </section>
         </main>
     );
