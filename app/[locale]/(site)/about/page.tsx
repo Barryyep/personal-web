@@ -19,11 +19,12 @@ export default function AboutPage() {
                         {/* Text content - takes 2 columns */}
                         <div className="md:col-span-2 space-y-4 text-[var(--fg-muted)] leading-relaxed">
                             <p>
-                                Hi, I'm Barry — a software engineer and builder based in Los Angeles, currently pursuing my Master's in Computer Science at USC.
+                                Hi, I'm Barry — a software engineer and builder based in Los Angeles. I recently completed my Master's in Computer Science at USC and now work as a software engineer at A&amp;C Technology.
                                 I work on systems that need to scale, interfaces that need to feel right, and problems that don't have obvious solutions yet.
                             </p>
                             <p>
-                                My professional focus is on full-stack development, data analysis and ETL, and the occasional frontend challenge.
+                                At A&amp;C I designed and own the core LLM engine behind <a href="https://rextrix.ai" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--accent)]">RexTrix</a>, an AI-native platform that turns a single text prompt into a fully playable mini-game — along with the data infrastructure that measures how it performs.
+                                My focus is putting large language models into reliable production systems, plus full-stack development and data/ETL.
                                 I also have a strong interest in product design and app experiences, and I'm eager to grow toward a Product Manager role in the future.
                                 I care about performance, maintainability, and building products that people actually use.
                             </p>
@@ -85,7 +86,7 @@ export default function AboutPage() {
                     <div className="space-y-3 text-[var(--fg-muted)]">
                         <p className="flex items-start gap-3">
                             <span className="text-xl">💼</span>
-                            <span>Pursuing Master's in Computer Science at USC</span>
+                            <span>Software Engineer at A&amp;C Technology, building <a href="https://rextrix.ai" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--accent)]">RexTrix</a></span>
                         </p>
                         <p className="flex items-start gap-3">
                             <span className="text-xl">📚</span>
@@ -93,7 +94,7 @@ export default function AboutPage() {
                         </p>
                         <p className="flex items-start gap-3">
                             <span className="text-xl">🎯</span>
-                            <span>Learning Vue.js and using Figma</span>
+                            <span>Building multi-agent LLM systems &amp; data infrastructure</span>
                         </p>
                         <p className="flex items-start gap-3">
                             <span className="text-xl">🏊</span>
