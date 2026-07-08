@@ -5,15 +5,16 @@ import { MDXContent } from '@/components/MDXContent';
 import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
-    return allLifePosts.map((p) => ({ slug: p.slug }));
+    return allLifePosts.map((p) => ({ locale: p.locale || 'en', slug: p.slug }));
 }
 
 export async function generateMetadata({
     params
 }: {
-    params: { slug: string }
+    params: { slug: string; locale: string }
 }): Promise<Metadata> {
-    const post = allLifePosts.find((p) => p.slug === params.slug);
+    const locale = params.locale || 'en';
+    const post = allLifePosts.find((p) => p.slug === params.slug && (p.locale || 'en') === locale);
 
     if (!post) {
         return { title: 'Not Found' };
@@ -38,8 +39,9 @@ export async function generateMetadata({
     };
 }
 
-export default function LifeDetailPage({ params }: { params: { slug: string } }) {
-    const post = allLifePosts.find((p) => p.slug === params.slug);
+export default function LifeDetailPage({ params }: { params: { slug: string; locale: string } }) {
+    const locale = params.locale || 'en';
+    const post = allLifePosts.find((p) => p.slug === params.slug && (p.locale || 'en') === locale);
     if (!post) return notFound();
 
     const env = process.env.NODE_ENV === 'development' ? 'dev' : 'prod';

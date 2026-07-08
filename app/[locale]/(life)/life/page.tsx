@@ -19,10 +19,13 @@ export const metadata: Metadata = {
     },
 };
 
-export default function LifeListPage() {
+export default function LifeListPage({ params }: { params: { locale: string } }) {
     const env = process.env.NODE_ENV === 'development' ? 'dev' : 'prod';
+    const locale = params.locale || 'en';
     const posts = listingFilter(
-        allLifePosts.sort((a, b) => +new Date(b.date) - +new Date(a.date)),
+        allLifePosts
+            .filter((p) => (p.locale || 'en') === locale)
+            .sort((a, b) => +new Date(b.date) - +new Date(a.date)),
         env
     );
 
