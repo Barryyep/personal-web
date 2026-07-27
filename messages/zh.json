@@ -12,6 +12,7 @@
         "description": "我是 Barry，一个热爱创造的人。从 AI 驱动的数据分析到个人故事，我关心创造能够连接的事物——连接数据与人，连接工作与生活。",
         "viewWork": "查看作品",
         "viewLife": "阅读故事",
+        "viewResume": "查看简历",
         "workTitle": "作品",
         "workDescription": "项目、系统和工程作品。从 MVP 到生产规模的应用程序。",
         "lifeTitle": "生活",

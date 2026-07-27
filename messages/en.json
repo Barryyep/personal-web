@@ -12,6 +12,7 @@
         "description": "I'm Barry, a builder at heart. From AI-driven analytics to personal stories, I care about creating things that connect—between data and people, between work and life.",
         "viewWork": "View Work",
         "viewLife": "Read Stories",
+        "viewResume": "View Resume",
         "workTitle": "Work",
         "workDescription": "Projects, systems, and engineering work. From MVPs to production-scale applications.",
         "lifeTitle": "Life",
