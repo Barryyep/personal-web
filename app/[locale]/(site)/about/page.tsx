@@ -31,6 +31,17 @@ export default function AboutPage() {
                             <p>
                                 Outside of work and study, you'll probably find me swimming, on a golf course, or reading Agatha Christie's detective novels.
                             </p>
+                            <p className="pt-2">
+                                <a
+                                    href="/Barry_Wang_Resume.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--fg)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
+                                >
+                                    <span>📄</span>
+                                    <span>Download Resume</span>
+                                </a>
+                            </p>
                         </div>
 
                         {/* Photo - takes 1 column */}
